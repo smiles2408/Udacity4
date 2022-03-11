@@ -8,9 +8,11 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin")
 
 
 
+
 module.exports = {
   entry: './src/client/index.js',
   mode: 'production',
+ 
   module: {
     rules: [
             {

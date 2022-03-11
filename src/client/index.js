@@ -12,10 +12,8 @@ import './styles/header.scss'
 
 console.log(checkForName);
 
-alert("I AM good")
-console.log("CHANGE!!");
-//export module
-export{
+export {
     checkForName,
     handleSubmit
 }
+

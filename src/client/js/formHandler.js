@@ -5,9 +5,9 @@ function handleSubmit(event) {
 
     // check what text was put into the form field
     let formText = document.getElementById('name').value
-    checkForName(formText)
+    if(checkForName(formText)){
 
-    console.log("::: Form Submitted :::")
+        console.log("::: Form Submitted :::")
         fetch('http://localhost:8080/analyzeTest', {
             method: 'POST',
             credentials: 'same-origin',
@@ -21,6 +21,9 @@ function handleSubmit(event) {
         .then(function(res) {
             document.getElementById('result').innerHTML = res.message
         })
+    }
+
+   
 }
 
 export { handleSubmit }
