@@ -1,70 +1,46 @@
-
-const dotenv = require('dotenv')
-dotenv.config()
-
+require('dotenv').config()
 var path = require('path')
 const express = require('express')
-const fetch = require('node-fetch')
-const FormData= require('form-data')
+const fetch = require("node-fetch")
+var bodyParser = require('body-parser')
+var cors = require('cors')
+var validator = require('validator')
+const app = express()
+let reqType = 'txt'
+//const API_KEY=process.env.API_KEY
 const { send } = require('process')
 
-// Require bodyparser
-//Here we are configuring express to use body-parser as middle-ware.
-const bodyParser = require('body-parser')
-const cors = require('cors')
+app.use(cors())
+// to use json
+app.use(bodyParser.json())
+// to use url encoded values
+app.use(bodyParser.urlencoded({ extended: false }))
 
-// Cors for cross origin allowance
-app.use(cors());
-
-
-const app = express()
-
-app.listen(8080, function(){
-  console.log("Server has started on port 8080")
-})
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-//Initialize the dist project folder
 app.use(express.static('dist'))
 
-
-//Received API Data
-apiData = {}
-
-// Get Route
 app.get('/', function (req, res) {
-    res.sendFile('dist/index.html')
+    res.sendFile(path.resolve('src/client/views/index.html'))
 })
 
-// Post route 
-app.post('/analyzeTest', async function (req, res) {
-    const apiURL = 'https://api.meaningcloud.com/sentiment-2.1'
-    const formdata = new FormData()
+// designates what port the app will listen to for incoming requests
+app.listen(8080, function () {
+    console.log('Evaluate-news-NLP app listening on port 8080!')
+})
 
-    formdata.append("key", process.env.API_KEY)
-    formdata.append("lang", "en")
-    formdata.append("of","json")
-    formText = req.body.url
-    formdata.append("url", formText)
-
-    const requestOptions = {
-        method: 'POST',
-        mode: 'cors',
-        body: formdata,
-        redirect: 'follow'
+app.post('/userData', async(req, res) => {
+    // check if user input is url, text is default
+    console.log(reqType)
+    if (validator.isURL(req.body.input)) {
+        reqType = 'url'
+        console.log(reqType)
     }
-
-    let response = await fetch(apiURL, requestOptions)
-    let data = await response.json()
-    apiData.message = data.message;
-    res.send(apiData)
-    console.log(apiData)
+     console.log(reqType,process.env.API_KEY)
+    const response = await fetch(`https://api.meaningcloud.com/sentiment-2.1?key=${process.env.API_KEY}&lang=auto&${reqType}=${req.body.input}`)
+    try {
+        const data = await response.json()
+        res.send(data);
+        console.log(data)
+    } catch(error) {
+        console.log("error", error);
+    }
 })
-
-
-
-
-
-
-
