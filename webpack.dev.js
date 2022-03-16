@@ -6,15 +6,17 @@ const WorkboxPlugin = require('workbox-webpack-plugin')
 module.exports = {
     mode: 'development',
     entry: './src/client/index.js',
-   
-   
-
     devtool: 'source-map',
     stats: 'verbose',
     devServer: {
         contentBase: "./dist",
         hot: true,
     },
+    output: {
+        filename: '[name].bundle.js',
+        path: path.resolve(__dirname, 'dist'),
+        clean: true,
+      },
     module: {
         rules: [
             {
@@ -25,8 +27,7 @@ module.exports = {
             {
                 test: /\.(sa|sc|c)ss$/,
                 use: [ 'style-loader', 'css-loader', 'sass-loader' ]
-        }
-        
+        }       
         ]
     },
     plugins: [
