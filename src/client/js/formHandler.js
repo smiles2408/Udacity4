@@ -1,6 +1,6 @@
 import {updateUIPage} from './updateUIPage'
 
-  function handleSubmit(event) {
+function handleSubmit(event) {
     event.preventDefault()
 
     // get text that user submitted
@@ -8,8 +8,9 @@ import {updateUIPage} from './updateUIPage'
     analyzeText(formText)
 }
 
+//Function to Analyze the input text
 function analyzeText(formText) {
-    console.log("inside analyZeText")
+ //   console.log("inside analyZeText")
     fetch('/userData', {
         method: 'POST',
         credentials: 'same-origin',

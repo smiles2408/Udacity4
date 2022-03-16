@@ -6,8 +6,9 @@ var bodyParser = require('body-parser')
 var cors = require('cors')
 var validator = require('validator')
 const app = express()
+
+//Setting the default value to txt
 let reqType = 'txt'
-//const API_KEY=process.env.API_KEY
 const { send } = require('process')
 
 app.use(cors())
